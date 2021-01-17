@@ -114,26 +114,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         let cell = collectionview.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath as IndexPath) as! FreelancerCell
         if let model = models?[indexPath.row]
         {
-            
-           if let url = URL(string: model.icon.the52X52){
-            let session = URLSession(configuration: .default)
-            let task = session.dataTask(with: url) { data, responce, error in
-                if let error = error {
-                    print(error)
-                    return
-                }
-                guard let data = data else {
-                    return
-                }
-                if let data2 = UIImage(data: data)?.pngData() {
-                    DispatchQueue.main.async {
-                        cell.image52.image = UIImage(data: data2)
-                    }
-               
-                }
-            }.resume()
-                
-                
+            reqest.imageDownload(url: model.icon.the52X52) { (image) in
+                cell.image52.image = image
             }
                 cell.price.text = model.price
                 cell.titleLabel.text = model.title

@@ -12,7 +12,7 @@ class RequestCell {
         
         guard let url = URL(string: url) else {return}
         let session = URLSession(configuration: .default)
-        let task = session.dataTask(with: url) { data, responce, error in
+        let _ = session.dataTask(with: url) { data, responce, error in
             if let error = error {
                 print(error)
                 return
@@ -20,9 +20,13 @@ class RequestCell {
             guard let data = data else {
                 return
             }
-            let image = UIImage(data: data)
+            DispatchQueue.main.async {
+                let image = UIImage(data: data)
+                completion(image!)
+            }
+           
             
-            completion(image!)
+            
         }.resume()
         
     }
